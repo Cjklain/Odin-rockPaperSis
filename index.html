@@ -9,14 +9,58 @@
 </head>
 
 <body>
-    <script>
+    <style>
+        .again {
+            font-size: 48px;
+        }
+    </style>
+    <button class="again">Start/Try Again</button>
 
+    <script>
+        let playerPoints = 0;
+        let computerPoints = 0;
         const moves = ['Rock', 'Paper', "Scissors"]
+
+        const againButton = document.querySelector('.again');
+        // const computerSelection = computerPlay();
 
         function computerPlay() {
             const move = moves[Math.floor(Math.random() * 3)]
-            return move
+            return move.toLowerCase();
         }
+
+        function round(playerSelection, computerSelection = computerPlay()) {
+            const lowerPlayer = playerSelection.toLowerCase();
+            const fristLetterBigP = lowerPlayer.slice(0, 1).toUpperCase() + lowerPlayer.slice(1, lowerPlayer.length)
+            const firstLetterBigC = computerSelection.slice(0, 1).toUpperCase() + computerSelection.slice(1, computerSelection.length)
+            if (lowerPlayer === 'rock' && computerSelection === "paper" || lowerPlayer === "paper" && computerSelection === "scissors" || lowerPlayer === "scissors" && computerSelection === "rock") {
+                computerPoints += 1
+                return `You lose! ${firstLetterBigC} beats ${fristLetterBigP}`;
+            } else if (lowerPlayer === 'rock' && computerSelection === "rock" || lowerPlayer === "paper" && computerSelection === "paper" || lowerPlayer === "scissors" && computerSelection === "scissors") {
+                return `It's draw! ${firstLetterBigC} is equal ${fristLetterBigP}`;
+            } else if (lowerPlayer === 'rock' && computerSelection === "scissors" || lowerPlayer === "paper" && computerSelection === "rock" || lowerPlayer === "scissors" && computerSelection === "paper") {
+                playerPoints += 1
+                return `You win! ${fristLetterBigP} beats ${firstLetterBigC}`
+            } else {
+                return 'Somethig went wrong! Chceck spelling, remember there are only 3 options.';
+            }
+        }
+
+        function game() {
+            for (let i = 0; i < 5; i++) {
+                const playerChocie = prompt('What are you choosing? You have 3 options: rock, paper, scissors');
+                console.log(round(playerChocie))
+                console.log(`At this moment you have ${playerPoints} points and your oponent have ${computerPoints}`)
+                const html = `working`
+
+            }
+            playerPoints = 0;
+            computerPoints = 0;
+        }
+
+        againButton.addEventListener('click', game);
+
+
 
     </script>
 </body>
