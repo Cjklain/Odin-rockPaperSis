@@ -9,20 +9,28 @@
 </head>
 
 <body>
-    <style>
-        .again {
-            font-size: 48px;
-        }
-    </style>
-    <button class="again">Start/Try Again</button>
+    <p>Click Start button and let's the fight begin</p>
+    <button class="start">Start/Reset</button>
+    <p>Choose you weapon</p>
+    <button data-value="rock" class="playButton rock">Rock</button>
+    <button data-value="paper" class="playButton paper">Paper</button>
+    <button data-value="scissors" class="playButton scissors">Scissors</button>
 
+    <div class="result"><p class="currentRoundResult"></p>
+    </div>
+    <div class="scoreboards"></div>
     <script>
         let playerPoints = 0;
         let computerPoints = 0;
+        let moveResult = ``;
+        let readyToPlay = false;
         const moves = ['Rock', 'Paper', "Scissors"]
 
-        const againButton = document.querySelector('.again');
-        // const computerSelection = computerPlay();
+        const startButton = document.querySelector('.start')
+        const playButtons = document.querySelectorAll('.playButton')
+        const resultDiv = document.querySelector('.result')
+        const scoreBoards = document.querySelector('.scoreboards')
+        const currentRoundResult = document.querySelector('.currentRoundResult')
 
         function computerPlay() {
             const move = moves[Math.floor(Math.random() * 3)]
@@ -35,33 +43,40 @@
             const firstLetterBigC = computerSelection.slice(0, 1).toUpperCase() + computerSelection.slice(1, computerSelection.length)
             if (lowerPlayer === 'rock' && computerSelection === "paper" || lowerPlayer === "paper" && computerSelection === "scissors" || lowerPlayer === "scissors" && computerSelection === "rock") {
                 computerPoints += 1
-                return `You lose! ${firstLetterBigC} beats ${fristLetterBigP}`;
+                return moveResult = `You lose! ${firstLetterBigC} beats ${fristLetterBigP}`
             } else if (lowerPlayer === 'rock' && computerSelection === "rock" || lowerPlayer === "paper" && computerSelection === "paper" || lowerPlayer === "scissors" && computerSelection === "scissors") {
-                return `It's draw! ${firstLetterBigC} is equal ${fristLetterBigP}`;
+                return moveResult = `It's draw! ${firstLetterBigC} is equal ${fristLetterBigP}`
             } else if (lowerPlayer === 'rock' && computerSelection === "scissors" || lowerPlayer === "paper" && computerSelection === "rock" || lowerPlayer === "scissors" && computerSelection === "paper") {
                 playerPoints += 1
-                return `You win! ${fristLetterBigP} beats ${firstLetterBigC}`
+                return moveResult = `You win! ${fristLetterBigP} beats ${firstLetterBigC}`
             } else {
                 return 'Somethig went wrong! Chceck spelling, remember there are only 3 options.';
             }
         }
 
-        function game() {
-            for (let i = 0; i < 5; i++) {
-                const playerChocie = prompt('What are you choosing? You have 3 options: rock, paper, scissors');
-                console.log(round(playerChocie))
-                console.log(`At this moment you have ${playerPoints} points and your oponent have ${computerPoints}`)
-                const html = `working`
-
-            }
+        function startAndReset(){
+            readyToPlay = true;
             playerPoints = 0;
             computerPoints = 0;
+            currentRoundResult.textContent = ``
+            scoreBoards.textContent = ``
+
         }
 
-        againButton.addEventListener('click', game);
+        
+        playButtons.forEach((button)=> button.addEventListener('click',function(e){
+            if(readyToPlay){
+            currentRoundResult.textContent = moveResult;
+            scoreBoards.textContent = `At this moment you have ${playerPoints} points and your oponent have ${computerPoints}`
+            if(playerPoints>=5 || computerPoints>=5){
+                currentRoundResult.textContent = `That's all the game is end and the WINNER IS: ${playerPoints>computerPoints? "PLAYER" : "COMPUTER"}`
+                scoreBoards.textContent = `If you want to try again click reset button`;
+                readyToPlay = false
+            }
+            }
+        }))
 
-
-
+        startButton.addEventListener('click', startAndReset);
     </script>
 </body>
 
